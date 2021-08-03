@@ -35,7 +35,6 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     ShippingModule,
     StaffModule,
     RoleModule,
-
     SuppliersModule,
     CategoryModule,
     ProductModule,
