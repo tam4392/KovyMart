@@ -1,38 +1,45 @@
 import { ProductComment } from './../../product/entities/product_comment.entity';
 import { Order } from './../../order/entities/order.entity';
 import { CustomerAddress } from './customer_address.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BeforeInsert,
+} from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastName: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: false })
+  @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   phone: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', nullable: true })
   gender: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   birthday: Date;
 
-  @Column()
+  @Column({ nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @OneToMany(
@@ -46,4 +53,13 @@ export class Customer {
 
   @OneToMany(() => ProductComment, (productComment) => productComment.customer)
   comments: ProductComment[];
+
+  @BeforeInsert()
+  async checkBeforeCreate() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+    const salt = await bcrypt.genSalt();
+    const hashPass = await bcrypt.hash(this.password, salt);
+    this.password = hashPass;
+  }
 }

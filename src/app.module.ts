@@ -25,7 +25,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
       validationSchema: configValidationSchema,
     }),
     TypeOrmModule.forRootAsync(configOrm),
-    // AuthModule,
+    AuthModule,
     ProvinceModule,
     DistrictModule,
     WardModule,
@@ -38,7 +38,7 @@ import { InventoryModule } from './modules/inventory/inventory.module';
     SuppliersModule,
     CategoryModule,
     ProductModule,
-    InventoryModule
+    InventoryModule,
   ],
 })
 export class AppModule {}

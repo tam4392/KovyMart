@@ -1,18 +1,16 @@
+import { CustomerService } from './../../customer/service/customer.service';
+import { Customer } from './../../customer/entities/customer.entity';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from './../dto/jwt_payload.interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { errorsKey } from './../../../config/errors_key';
-import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(User)
-    private readonly usersRepository: Repository<User>,
+    private readonly customerService: CustomerService,
     private readonly configService: ConfigService,
   ) {
     super({
@@ -22,13 +20,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<User> {
-    const { user } = payload;
-    const email = user.email;
-    const userItem: User = await this.usersRepository.findOne({ email });
-    if (!userItem) {
+  async validate(payload: JwtPayload): Promise<Customer> {
+    const { customer } = payload;
+    const email = customer.email;
+    const customerItem: Customer = await this.customerService.findByEmail(
+      email,
+    );
+    if (!customerItem) {
       throw new UnauthorizedException(errorsKey.users.auth_credential_wrong);
     }
-    return userItem;
+    return customerItem;
   }
 }

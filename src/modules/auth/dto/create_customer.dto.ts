@@ -1,10 +1,7 @@
 import { IsNotEmpty, IsEmail, Matches } from 'class-validator';
-import { errorsKey } from './../../../config/errors_key';
+import { errorsKey } from '../../../config/errors_key';
 
-export class CreateUserDto {
-  @IsNotEmpty({ message: `name_${errorsKey.is_empty}` })
-  name: string;
-
+export class CreateCustomerDto {
   @IsEmail({}, { message: errorsKey.users.email_format })
   @IsNotEmpty({ message: errorsKey.is_empty })
   email: string;

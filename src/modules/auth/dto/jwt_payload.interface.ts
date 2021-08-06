@@ -1,4 +1,5 @@
-import { User } from './../entities/user.entity';
+import { Customer } from './../../customer/entities/customer.entity';
+
 export interface JwtPayload {
-  user: User;
+  customer: Customer;
 }

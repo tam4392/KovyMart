@@ -1,6 +1,5 @@
 import { AuthCredentialDto } from './../dto/auth_credential.dto';
-import { User } from './../entities/user.entity';
-import { CreateUserDto } from './../dto/create_user.dto';
+import { CreateCustomerDto } from '../dto/create_customer.dto';
 import {
   Controller,
   Get,
@@ -19,8 +18,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
-  signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.authService.signUp(createUserDto);
+  signUp(@Body() createCustomerDto: CreateCustomerDto): Promise<any> {
+    return this.authService.signUp(createCustomerDto);
   }
 
   @Post('/signin')
