@@ -1,14 +1,17 @@
-import { CustomerService } from './../../customer/service/customer.service';
-import { Customer } from './../../customer/entities/customer.entity';
+import { CustomerService } from '../../customer/service/customer.service';
+import { Customer } from '../../customer/entities/customer.entity';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayload } from './../dto/jwt_payload.interface';
+import { JwtPayload } from '../dto/jwt_payload.interface';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { errorsKey } from './../../../config/errors_key';
+import { errorsKey } from '../../../config/errors_key';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class CustomerJwtStrategy extends PassportStrategy(
+  Strategy,
+  'jwt-customer',
+) {
   constructor(
     private readonly customerService: CustomerService,
     private readonly configService: ConfigService,
