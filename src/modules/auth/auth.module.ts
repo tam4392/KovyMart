@@ -1,6 +1,6 @@
 import { CustomerModule } from './../customer/customer.module';
 import { ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { CustomerJwtStrategy } from './strategies/customer.jwt_strategy';
 import { Module } from '@nestjs/common';
 import { AuthController } from './controllers/auth.controller';
 import { AuthService } from './services/auth.service';
@@ -15,8 +15,8 @@ import { configJwt } from './../../config/jwt';
     JwtModule.registerAsync(configJwt),
     CustomerModule,
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, CustomerJwtStrategy], 
   controllers: [AuthController],
-  exports: [JwtStrategy, PassportModule],
+  exports: [CustomerJwtStrategy, PassportModule],
 })
 export class AuthModule {}

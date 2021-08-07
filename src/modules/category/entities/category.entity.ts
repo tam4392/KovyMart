@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BeforeInsert,
+} from 'typeorm';
 import { Product } from './../../product/entities/product.entity';
 
 @Entity()
@@ -9,7 +15,7 @@ export class Category {
   @Column({ nullable: false })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column()
@@ -20,4 +26,10 @@ export class Category {
 
   @OneToMany(() => Product, (product) => product.category)
   product: Product[];
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
