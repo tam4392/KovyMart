@@ -17,12 +17,12 @@ import { AuthService } from '../services/auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/signup')
+  @Post('/sign-up')
   signUp(@Body() createCustomerDto: CreateCustomerDto): Promise<any> {
     return this.authService.signUp(createCustomerDto);
   }
 
-  @Post('/signin')
+  @Post('/sign-in')
   signIn(@Body() authCredentialDto: AuthCredentialDto): Promise<any> {
     return this.authService.signIn(authCredentialDto);
   }
