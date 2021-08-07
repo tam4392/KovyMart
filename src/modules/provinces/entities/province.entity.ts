@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   OneToOne,
+  BeforeInsert,
 } from 'typeorm';
 
 @Entity()
@@ -36,4 +37,10 @@ export class Province {
 
   @OneToOne(() => Supplier, (supplier) => supplier.province)
   supplier: Supplier;
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
