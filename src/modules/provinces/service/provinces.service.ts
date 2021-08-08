@@ -13,9 +13,9 @@ export class ProvinceService {
     private readonly provinceRepository: Repository<Province>,
   ) {}
 
-  //   async findAll(paginationDto: PaginationDto): Promise<PaginatedResultDto> {
-
-  //   }
+  async findAll(): Promise<any> {
+    return this.provinceRepository.find();
+  }
 
   async findOne(id: number): Promise<Province> {
     return this.provinceRepository.findOne(id);
@@ -24,8 +24,6 @@ export class ProvinceService {
   async create(createDto: CreateProvincesDto): Promise<Province> {
     const province = new Province();
     province.name = createDto.name;
-    
-
     try {
       const result = await this.provinceRepository.save(province);
       return result;
@@ -34,20 +32,18 @@ export class ProvinceService {
     }
   }
 
-  //   async update(id: number, createActorDto: CreateActorDto): Promise<Province> {
-  //     const actor = await this.findOne(id);
-  //     actor.first_name = createActorDto.first_name;
-  //     actor.last_name = createActorDto.last_name;
+  async update(id: number, createDto: CreateProvincesDto): Promise<any> {
+      const province = await this.findOne(id);
+      province.name = createDto.name;
+      try {
+        const result = await this.provinceRepository.save(province);
+        return result;
+      } catch (error) {
+        console.log(error);
+      }
+  }
 
-  //     try {
-  //       const result = await this.actorRepository.save(actor);
-  //       return result;
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-
-  //   async remove(id: number): Promise<void> {
-  //     // await this.actorRepository.delete(actor_id);
-  //   }
+    async remove(id: number): Promise<void> {
+       await this.provinceRepository.delete(id);
+    }
 }
