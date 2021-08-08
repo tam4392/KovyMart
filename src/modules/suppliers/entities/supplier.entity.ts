@@ -5,6 +5,7 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  BeforeInsert,
 } from 'typeorm';
 import { Province } from 'src/modules/provinces/entities/province.entity';
 import { District } from 'src/modules/district/entities/district.entity';
@@ -40,12 +41,18 @@ export class Supplier {
   @JoinColumn()
   ward: Ward;
 
-  @Column()
+  @Column({ nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @OneToMany(() => Product, (product) => product.supplier)
   product: Product[];
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
