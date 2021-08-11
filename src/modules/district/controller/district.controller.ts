@@ -15,6 +15,7 @@ import {
   Req,
   Res,
   Query,
+  Patch
 } from '@nestjs/common';
 import { Response } from 'express';
 @Controller('api/districts')
@@ -37,7 +38,7 @@ export class DistrictController {
   create(@Body() createDto: CreateDistrictDto, @Res() res: Response) {
     return this.districtService.create(createDto, res);
   }
-  @Put(':id')
+  @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() createDto: CreateDistrictDto,
