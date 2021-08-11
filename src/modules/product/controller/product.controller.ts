@@ -21,7 +21,6 @@ import {
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @UseGuards(JwtCustomerAuthGuard)
   @Get()
   findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedResultDto> {
     paginationDto.page = Number(paginationDto.page);
@@ -33,7 +32,6 @@ export class ProductController {
     });
   }
 
-  @UseGuards(JwtCustomerAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Product> {
     return this.productService.findOne(Number(id));

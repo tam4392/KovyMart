@@ -20,13 +20,13 @@ export class Supplier {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true, nullable: true })
   email: string;
 
-  @Column()
+  @Column({nullable: true})
   phone: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   address: string;
 
   @OneToOne(() => Province, (province) => province.supplier)
