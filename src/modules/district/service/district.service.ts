@@ -5,6 +5,8 @@ import { Injectable, Res, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Response } from 'express';
+import { PaginatedResultDto } from '../../helper/dto/paginated_result.dto';
+import { PaginationDto } from '../../helper/dto/pagination.dto';
 @Injectable()
 export class DistrictService {
   constructor(
@@ -13,8 +15,28 @@ export class DistrictService {
     private provinceService: ProvinceService,
   ) {}
 
-  async findAll(): Promise<any[]> {
-    return this.districtRepository.find();
+  async findAll(paginationDto: PaginationDto): Promise<PaginatedResultDto> {
+    if (!paginationDto.page) {
+      paginationDto.page = 1;
+    }
+    if (!paginationDto.limit) {
+      paginationDto.limit = 20;
+    }
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    const totalCount = await this.districtRepository.count();
+    const lstCategory = await this.districtRepository
+      .createQueryBuilder()
+      .orderBy('id', 'ASC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit)
+      .getMany();
+
+    return {
+      totalCount,
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      data: lstCategory,
+    };
   }
   async findOne(id: number): Promise<District> {
     return this.districtRepository.findOne(id);
