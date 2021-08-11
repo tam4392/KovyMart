@@ -1,3 +1,5 @@
+import { Product } from './../entities/product.entity';
+import { ProductDto } from './../dto/product.dto';
 import { JwtCustomerAuthGuard } from '../../auth/guards/customer.jwt_auth.guard';
 import { ProductService } from './../service/product.service';
 import { PaginatedResultDto } from './../../helper/dto/paginated_result.dto';
@@ -19,7 +21,6 @@ import {
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @UseGuards(JwtCustomerAuthGuard)
   @Get()
   findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedResultDto> {
     paginationDto.page = Number(paginationDto.page);
@@ -29,5 +30,15 @@ export class ProductController {
       ...paginationDto,
       limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
     });
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Product> {
+    return this.productService.findOne(Number(id));
+  }
+
+  @Post()
+  create(@Body() productDto: ProductDto): Promise<Product> {
+    return this.productService.create(productDto);
   }
 }

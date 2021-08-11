@@ -20,7 +20,6 @@ import { PaginatedResultDto } from '../../helper/dto/paginated_result.dto';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @UseGuards(JwtCustomerAuthGuard)
   @Get()
   findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedResultDto> {
     paginationDto.page = Number(paginationDto.page);

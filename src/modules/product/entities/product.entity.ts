@@ -11,6 +11,8 @@ import {
   ManyToOne,
   OneToOne,
   OneToMany,
+  BeforeInsert,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -24,28 +26,36 @@ export class Product {
   @Column()
   sku: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column({ type: 'float' })
   price: number;
 
-  @Column()
+  @Column({ nullable: true })
   unit: string;
 
-  @Column({ type: 'float' })
+  @Column({ type: 'float', nullable: true })
   discount: number;
 
+  @Column({ nullable: true })
+  categoryId: number;
+
   @ManyToOne(() => Category, (category) => category.product)
+  @JoinColumn({ name: 'categoryId' })
   category: Category;
 
+  @Column({ nullable: true })
+  supplierId: number;
+
   @ManyToOne(() => Supplier, (supplier) => supplier.product)
+  @JoinColumn({ name: 'supplierId' })
   supplier: Supplier;
 
-  @Column()
+  @Column({ nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @OneToOne(() => Inventory, (inventory) => inventory.product)
@@ -60,7 +70,9 @@ export class Product {
   @OneToMany(() => ProductComment, (productComment) => productComment.product)
   comments: ProductComment[];
 
-  //   @OneToOne(() => Payment, (payment) => payment.order)
-  //   @JoinColumn()
-  //   payment: Payment;
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }

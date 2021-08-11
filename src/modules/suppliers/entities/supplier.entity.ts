@@ -5,6 +5,7 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  BeforeInsert,
 } from 'typeorm';
 import { Province } from 'src/modules/provinces/entities/province.entity';
 import { District } from 'src/modules/district/entities/district.entity';
@@ -19,13 +20,13 @@ export class Supplier {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true, nullable: true })
   email: string;
 
-  @Column()
+  @Column({nullable: true})
   phone: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   address: string;
 
   @OneToOne(() => Province, (province) => province.supplier)
@@ -40,12 +41,18 @@ export class Supplier {
   @JoinColumn()
   ward: Ward;
 
-  @Column()
+  @Column({ nullable: true })
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: true })
   updatedAt: Date;
 
   @OneToMany(() => Product, (product) => product.supplier)
   product: Product[];
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
