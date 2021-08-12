@@ -7,7 +7,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
+  JoinColumn,
+  BeforeInsert
 } from 'typeorm';
 @Entity()
 export class Ward {
@@ -17,15 +20,17 @@ export class Ward {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  districtId: number;
+
   @Column()
   createdAt: Date;
 
   @Column()
   updatedAt: Date;
 
-  @ManyToOne(() => District, (district) => district.wards, {
-    eager: false,
-  })
+  @ManyToOne(() => District, (district) => district.wards)
+  @JoinColumn({ name: 'districtId' })
   district: District;
 
   @OneToOne(() => CustomerAddress, (customerAddress) => customerAddress.ward)
@@ -33,5 +38,9 @@ export class Ward {
 
   @OneToOne(() => Supplier, (supplier) => supplier.ward)
   supplier: Supplier;
+  @BeforeInsert()
+  beforeInsert() {
+    this.updatedAt = new Date();
+  }
 
 }

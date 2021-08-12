@@ -9,6 +9,6 @@ import {ProvinceModule} from './../provinces/province.module'
   imports: [TypeOrmModule.forFeature([District]), ProvinceModule],
   providers: [DistrictService],
   controllers: [DistrictController],
-  exports: [],
+  exports: [DistrictService],
 })
 export class DistrictModule {}
