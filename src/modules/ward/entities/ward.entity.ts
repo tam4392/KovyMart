@@ -1,3 +1,7 @@
+
+import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
+import { CustomerAddress } from './../../customer/entities/customer_address.entity';
+import { District } from './../../district/entities/district.entity';
 import {
   Entity,
   Column,
@@ -5,10 +9,6 @@ import {
   ManyToOne,
   OneToOne,
 } from 'typeorm';
-import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
-import { CustomerAddress } from './../../customer/entities/customer_address.entity';
-import { District } from './../../district/entities/district.entity';
-
 @Entity()
 export class Ward {
   @PrimaryGeneratedColumn()
@@ -33,4 +33,5 @@ export class Ward {
 
   @OneToOne(() => Supplier, (supplier) => supplier.ward)
   supplier: Supplier;
+
 }
