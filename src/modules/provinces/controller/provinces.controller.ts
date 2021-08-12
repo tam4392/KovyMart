@@ -24,5 +24,21 @@ export class ProvincesController {
   create(@Body() createDto: CreateProvincesDto): Promise<Province> {
     return this.provincesService.create(createDto);
   }
+  @Get(':id')
+  findOne(@Param('id')id:string): Promise<Province> {
+    return this.provincesService.findOne(Number(id));
+  }
+  @Put(':id')
+  update(@Param('id')id:string , createDto: CreateProvincesDto): Promise<Province> {
+    return this.provincesService.update(Number(id),createDto);
+  }
+  @Delete(':id')
+  delete(@Param('id')id:string): Promise<void> {
+    return this.provincesService.remove(Number(id));
+  }
+  @Get('/')
+  findAll(): Promise<Province> {
+    return this.provincesService.findAll();
+  }
 
 }
