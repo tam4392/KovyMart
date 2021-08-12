@@ -69,10 +69,7 @@ export class ProvinceService {
         .json({ message: 'provinceId not found' });
     }
   }
-    async remove(id: number, @Res() res: Response,): Promise<any> {
-       await this.provinceRepository.delete(id);
-       return res.json({
-         "message":"Success"
-       });
-    }
+    async remove(id: number): Promise<void> {
+    await this.provinceRepository.delete(id);
+  }
 }
