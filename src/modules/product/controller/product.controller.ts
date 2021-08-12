@@ -14,9 +14,11 @@ import {
   Param,
   UseGuards,
   Req,
+  Res,
   Query,
+  Patch
 } from '@nestjs/common';
-
+import { Response } from 'express';
 @Controller('api/product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -40,5 +42,14 @@ export class ProductController {
   @Post()
   create(@Body() productDto: ProductDto): Promise<Product> {
     return this.productService.create(productDto);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() createDto: ProductDto,
+    @Res() res: Response,
+  ): Promise<Product> {
+    return this.productService.update(Number(id), createDto, res);
   }
 }
