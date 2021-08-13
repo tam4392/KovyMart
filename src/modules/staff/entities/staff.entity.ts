@@ -7,8 +7,9 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  BeforeInsert
 } from 'typeorm';
-
+import * as bcrypt from 'bcrypt';
 @Entity()
 export class Staff {
   @PrimaryGeneratedColumn()
@@ -47,4 +48,13 @@ export class Staff {
 
   @OneToMany(() => Shipping, shipping => shipping.staff)
   shipping: Shipping[];
+
+  @BeforeInsert()
+  async checkBeforeCreate() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+    const salt = await bcrypt.genSalt();
+    const hashPass = await bcrypt.hash(this.password, salt);
+    this.password = hashPass;
+  }
 }
