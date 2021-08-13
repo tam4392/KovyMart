@@ -1,9 +1,11 @@
 import { ProductDto } from './../dto/product.dto';
 import { Product } from './../entities/product.entity';
 import { PaginatedResultDto } from '../../helper/dto/paginated_result.dto';
-import { Injectable } from '@nestjs/common';
+import { CategoryService } from 'src/modules/category/service/category.service';
+import { Injectable, Res, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Response } from 'express';
 import { PaginationDto } from '../../helper/dto/pagination.dto';
 
 @Injectable()
@@ -11,6 +13,7 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+    private categoryService: CategoryService,
   ) {}
 
   async findAll(paginationDto: PaginationDto): Promise<PaginatedResultDto> {
@@ -67,14 +70,50 @@ export class ProductService {
     product.price = productDto.price;
     product.unit = productDto.unit || '';
     product.discount = productDto.discount || 0;
-    product.categoryId = productDto.categoryId;
-    product.supplierId = productDto.supplierId;
+    product.categoryId = productDto.categoryId ;
+    product.supplierId = productDto.supplierId ;
 
     try {
       const result = await this.productRepository.save(product);
       return result;
     } catch (error) {
       console.log(error);
+    }
+  }
+  async update(
+    id: number,
+    createDto: ProductDto,
+    @Res() res: Response,
+  ): Promise<any> {
+    const product = await this.productRepository.findOne(id);
+    if (product) {
+      product.name = createDto.name;
+      product.sku = createDto.sku;
+      product.description = createDto.description;
+      product.price = createDto.price;
+      product.unit = createDto.unit;
+      product.discount = createDto.discount;
+      product.categoryId = createDto.categoryId;
+      const pv = await this.categoryService.findOne(product.categoryId);
+      if (pv) {
+        try {
+          const result = await this.productRepository.save(product);
+          console.log(result);
+          return res.json(result);
+        } catch (error) {
+          return res
+            .status(HttpStatus.BAD_REQUEST)
+            .json({ message: 'update not successfull' });
+        }
+      } else {
+        return res
+          .status(HttpStatus.BAD_REQUEST)
+          .json({ message: 'Category not found' });
+      }
+    } else {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: 'Not found' });
     }
   }
 }
