@@ -8,6 +8,8 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  JoinColumn,
+  BeforeInsert
 } from 'typeorm';
 import { Supplier } from 'src/modules/suppliers/entities/supplier.entity';
 
@@ -19,16 +21,18 @@ export class District {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  provinceId: number;
+
+  @ManyToOne(() => Province, (provinces) => provinces.districts)
+  @JoinColumn({ name: 'provinceId' })
+  province: Province;
+
   @Column()
   createdAt: Date;
 
   @Column()
   updatedAt: Date;
-
-  @ManyToOne(() => Province, (provinces) => provinces.districts, {
-    eager: false,
-  })
-  province: Province;
 
   @OneToMany(() => Ward, (ward) => ward.district, {
     eager: false,
@@ -43,4 +47,8 @@ export class District {
 
   @OneToOne(() => Supplier, (supplier) => supplier.district)
   supplier: Supplier;
+  @BeforeInsert()
+  beforeInsert() {
+    this.updatedAt = new Date();
+  }
 }

@@ -13,9 +13,11 @@ import {
   Param,
   UseGuards,
   Req,
+  Res,
   Query,
+  Patch
 } from '@nestjs/common';
-
+import { Response } from 'express';
 @Controller('api/provinces')
 export class ProvincesController {
   constructor(private readonly provincesService: ProvinceService) {}
@@ -28,17 +30,26 @@ export class ProvincesController {
   findOne(@Param('id')id:string): Promise<Province> {
     return this.provincesService.findOne(Number(id));
   }
-  @Put(':id')
-  update(@Param('id')id:string , createDto: CreateProvincesDto): Promise<Province> {
-    return this.provincesService.update(Number(id),createDto);
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() createDto: CreateProvincesDto,
+    @Res() res: Response,
+  ): Promise<Province> {
+    return this.provincesService.update(Number(id), createDto, res);
   }
   @Delete(':id')
-  delete(@Param('id')id:string): Promise<void> {
+  delete(@Param('id') id: string): Promise<void> {
     return this.provincesService.remove(Number(id));
   }
   @Get('/')
-  findAll(): Promise<Province> {
-    return this.provincesService.findAll();
+  findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedResultDto> {
+    paginationDto.page = Number(paginationDto.page);
+    paginationDto.limit = Number(paginationDto.limit);
+    return this.provincesService.findAll({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
 }
