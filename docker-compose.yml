@@ -18,7 +18,7 @@ services:
     container_name: pgadminContainer
     image: dpage/pgadmin4
     environment:
-        - PGADMIN_DEFAULT_EMAIL=hai@gmail.com
+        - PGADMIN_DEFAULT_EMAIL=kumori.292@gmail.com
         - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
         - 5050:80

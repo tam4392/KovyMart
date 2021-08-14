@@ -4,6 +4,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToOne,
+  BeforeInsert,
 } from 'typeorm';
 
 @Entity()
@@ -23,6 +24,12 @@ export class Payment {
   @Column()
   updatedAt: Date;
 
-  @OneToOne(() => Order, order => order.payment)
+  @OneToOne(() => Order, (order) => order.payment)
   order: Order;
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
