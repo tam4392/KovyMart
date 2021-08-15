@@ -10,7 +10,18 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
+  BeforeInsert,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
+
+export enum OrderStatus {
+  WAIT_CONFIRM = 1,
+  CONFIRMED,
+  PACKING,
+  SHIPPING,
+  COMPLETE,
+  CANCEL,
+}
 
 @Entity()
 export class Order {
@@ -21,12 +32,13 @@ export class Order {
   status: number;
 
   @Column({ type: 'float' })
-  total_price: number;
+  totalPrice: number;
 
-  @Column()
+  @Column({ nullable: true })
   note: string;
 
-  @ManyToOne(() => Customer, (customer) => customer.orders)
+  @ManyToOne(() => Customer, (customer) => customer.orders, { eager: false })
+  @Exclude({ toPlainOnly: true })
   customer: Customer;
 
   @OneToOne(() => Payment, (payment) => payment.order)
@@ -44,4 +56,11 @@ export class Order {
 
   @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order)
   orderDetail: OrderDetail[];
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+    this.status = OrderStatus.WAIT_CONFIRM;
+  }
 }

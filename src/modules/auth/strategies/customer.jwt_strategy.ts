@@ -32,6 +32,7 @@ export class CustomerJwtStrategy extends PassportStrategy(
     if (!customerItem) {
       throw new UnauthorizedException(errorsKey.users.auth_credential_wrong);
     }
+    delete customerItem.password;
     return customerItem;
   }
 }

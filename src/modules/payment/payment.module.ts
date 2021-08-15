@@ -8,6 +8,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([Payment])],
   providers: [PaymentService],
   controllers: [PaymentController],
-  exports: [],
+  exports: [PaymentService],
 })
 export class PaymentModule {}
