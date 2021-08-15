@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: KovyMartDb
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5051:5432
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
   pgadmin:
@@ -25,6 +25,13 @@ services:
     networks:
         - backend-local-networks
     restart: unless-stopped
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 9080:8080
+    networks:
+      - backend-local-networks
 networks:
   backend-local-networks:
 volumes:
