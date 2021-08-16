@@ -37,6 +37,7 @@ export class AuthService {
     }
   }
 }
+@Injectable()
 export class AuthStaffService {
   constructor(
     public readonly jwtService: JwtService,

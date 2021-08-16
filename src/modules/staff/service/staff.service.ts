@@ -20,7 +20,11 @@ import {
       const staff = new Staff();
       staff.email = createStaffDto.email;
       staff.password = createStaffDto.password;
-  
+      staff.firstName = createStaffDto.firstName;
+      staff.lastName = createStaffDto.lastName;
+      staff.phone = createStaffDto.phone;
+      staff.gender = createStaffDto.gender;
+      staff.birthday = createStaffDto.birthday;
       try {
         const result = await this.staffRepository.save(staff);
         delete result.password;

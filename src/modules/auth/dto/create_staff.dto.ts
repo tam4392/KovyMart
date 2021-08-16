@@ -11,4 +11,14 @@ export class CreateStaffDto {
     message: errorsKey.users.password_weak,
   })
   password: string;
+  @IsNotEmpty()
+  firstName: string
+  @IsNotEmpty()
+  lastName: string
+  @IsNotEmpty()
+  phone: string
+  @IsNotEmpty()
+  gender:boolean
+  @IsNotEmpty()
+  birthday: Date
 }
