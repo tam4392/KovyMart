@@ -39,8 +39,8 @@ export class ProvincesController {
     return this.provincesService.update(Number(id), createDto, res);
   }
   @Delete(':id')
-  delete(@Param('id')id:string ,@Res() res: Response,): Promise<Province> {
-    return this.provincesService.remove(Number(id),res);
+  delete(@Param('id') id: string): Promise<void> {
+    return this.provincesService.remove(Number(id));
   }
   @Get('/')
   findAll(@Query() paginationDto: PaginationDto): Promise<PaginatedResultDto> {

@@ -11,20 +11,27 @@ services:
       POSTGRES_DB: KovyMartDb
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5051:5432
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
   pgadmin:
     container_name: pgadminContainer
     image: dpage/pgadmin4
     environment:
-        - PGADMIN_DEFAULT_EMAIL=hai@gmail.com
+        - PGADMIN_DEFAULT_EMAIL=kumori.292@gmail.com
         - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
         - 5050:80
     networks:
         - backend-local-networks
     restart: unless-stopped
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 9080:8080
+    networks:
+      - backend-local-networks
 networks:
   backend-local-networks:
 volumes:

@@ -31,26 +31,26 @@ export class CategoryController {
     });
   }
 
-  //   @Get(':id')
-  //   findOne(@Param('id') id: string): Promise<Actor> {
-  //     return this.categoryService.findOne(Number(id));
-  //   }
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<Category> {
+    return this.categoryService.findOne(Number(id));
+  }
 
-  //   @Delete(':id')
-  //   remove(@Param('id') id: string): Promise<void> {
-  //     return this.categoryService.remove(Number(id));
-  //   }
+  @Delete(':id')
+  remove(@Param('id') id: string): Promise<void> {
+    return this.categoryService.remove(Number(id));
+  }
 
   @Post()
   create(@Body() createDto: CategoryDto): Promise<Category> {
     return this.categoryService.create(createDto);
   }
 
-  //   @Patch(':id')
-  //   update(
-  //     @Param('id') id: string,
-  //     @Body() createActorDto: CreateActorDto,
-  //   ): Promise<any> {
-  //     return this.categoryService.update(Number(id), createActorDto);
-  //   }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() CategoryDto: CategoryDto,
+  ): Promise<Category> {
+    return this.categoryService.update(Number(id), CategoryDto);
+  }
 }

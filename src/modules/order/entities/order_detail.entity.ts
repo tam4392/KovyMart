@@ -1,6 +1,13 @@
 import { Product } from './../../product/entities/product.entity';
 import { Order } from './order.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  BeforeInsert,
+} from 'typeorm';
 
 @Entity()
 export class OrderDetail {
@@ -19,7 +26,11 @@ export class OrderDetail {
   @ManyToOne(() => Order, (order) => order.orderDetail)
   order: Order;
 
+  @Column()
+  productId: number;
+
   @ManyToOne(() => Product, (product) => product.orderDetail)
+  @JoinColumn({ name: 'productId' })
   product: Product;
 
   @Column()
@@ -27,4 +38,10 @@ export class OrderDetail {
 
   @Column()
   updatedAt: Date;
+
+  @BeforeInsert()
+  beforeInsert() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }
