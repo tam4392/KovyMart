@@ -8,10 +8,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { errorsKey } from '../../../config/errors_key';
 
 @Injectable()
-export class StaffJwtStrategy extends PassportStrategy(
-  Strategy,
-  'jwt-staff',
-) {
+export class StaffJwtStrategy extends PassportStrategy(Strategy, 'jwt-staff') {
   constructor(
     private readonly staffService: StaffService,
     private readonly configService: ConfigService,
@@ -26,12 +23,11 @@ export class StaffJwtStrategy extends PassportStrategy(
   async validate(payload: JwtStaffPayload): Promise<Staff> {
     const { staff } = payload;
     const email = staff.email;
-    const staffItem: Staff = await this.staffService.findByEmail(
-      email,
-    );
+    const staffItem: Staff = await this.staffService.findByEmail(email);
     if (!staffItem) {
       throw new UnauthorizedException(errorsKey.users.auth_credential_wrong);
     }
+    delete staffItem.password;
     return staffItem;
   }
 }
