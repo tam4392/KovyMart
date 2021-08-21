@@ -52,4 +52,8 @@ export class ProductController {
   ): Promise<Product> {
     return this.productService.update(Number(id), createDto, res);
   }
+  @Delete(':id')
+  delete(@Param('id')id:string): Promise<void> {
+    return this.productService.remove(Number(id));
+  }
 }

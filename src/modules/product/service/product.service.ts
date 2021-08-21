@@ -116,4 +116,7 @@ export class ProductService {
         .json({ message: 'Not found' });
     }
   }
+  async remove(id: number): Promise<void> {
+    await this.productRepository.delete(id);
+ }
 }
